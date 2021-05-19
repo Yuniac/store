@@ -167,6 +167,7 @@ input {
 
 .show {
     display: block;
+    border: 3px double purple;
 }
 
 .hide {

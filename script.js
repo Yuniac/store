@@ -83,13 +83,6 @@ function addToCart() {
             } else {
                 cart.appendChild(div);
             }
-            // cart.childNodes.forEach(child => {
-            //     if (child.id == div.id) {
-            //         return "its duplicate"
-            //     } else {
-            //         cart.appendChild(div);
-            //     }
-            // })
         })
     })
 
@@ -101,7 +94,6 @@ list.forEach(item => {
 addToCart();
 
 // the search bar;
-
 const search = document.querySelector("input");
 search.addEventListener("keyup", () => {
     let term = search.value;
@@ -111,17 +103,18 @@ search.addEventListener("keyup", () => {
             product.classList.remove("hide");
         })
     }
-
-
-    // log(itemNames.length)
     itemNames.forEach(item => {
-        if (item.textContent.includes(term)) {
+        if (item.textContent.includes(term) || item.textContent.startsWith(term) || item.textContent === term) {
             productsContainer.childNodes.forEach(product => {
                 if (product.firstChild.textContent.includes(term)) {
                     product.classList.add("show");
                 } else {
                     product.classList.add("hide");
                 }
+            })
+        } else {
+            productsContainer.childNodes.forEach(product => {
+                product.classList.add("hide");
             })
         }
     })
@@ -130,3 +123,5 @@ search.addEventListener("keyup", () => {
 window.onload = function() {
     search.value = "";
 }
+
+// if (item.textContent === term || item.textContent.includes(term) || item.textContent.startsWith(term))
