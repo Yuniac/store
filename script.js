@@ -1,8 +1,10 @@
+const log = console.log;
+
 const productsContainer = document.querySelector("#products");
 const cart = document.querySelector("#cart");
 
 
-// item is the array of items from products.js
+// item is the array of products from products.js
 function append(item) {
     let div = document.createElement("div");
     let h2 = document.createElement("h2");
@@ -20,7 +22,7 @@ function append(item) {
             ul.appendChild(li);
         } else {
             let li = document.createElement("li");
-            li.textContent = `${Object.keys(item)[i]}:${item.price}`
+            li.textContent = `${Object.keys(item)[i]}: ${item.price}`
             ul.appendChild(li);
         }
     }
@@ -52,7 +54,7 @@ function addToCart() {
                 // this will return the value but not the description;
                 // the breakpoint allows us to determine where the word "count" is and where is the actual count of items, its a sperator;
                 let breakPoint = itemName.indexOf(":") + 2;
-                console.log(itemName)
+
                 if (itemName.startsWith("count")) {
                     let countWord = itemName.slice(0, breakPoint);
                     let count = itemName.slice(breakPoint);
@@ -60,11 +62,10 @@ function addToCart() {
 
                     function removeAnItem() {
                         let itemsCount = countWord + (count - 1);
-                        // productDetails is the list of cat, count, price. We are getting the price one and working with it;
+                        // productDetails is the list of categ, count, price. We are getting the price one and working with it;
                         productDetails[1].textContent = itemsCount;
-                        // append function is being called here to refresh the products div again to changes in products count؛
-                        append(list);
                     }
+                    // remove an item/reduce the count of items in stock by 1;
                     removeAnItem();
                 } else {
                     cartItem.textContent = itemName.slice(breakPoint);
@@ -75,7 +76,20 @@ function addToCart() {
             div.appendChild(h2)
             div.appendChild(list);
             div.classList.add("product-in-cart")
-            cart.appendChild(div);
+                // this generates IDs for each cart item based on it's product name, we are going to need those so we don't get duplicates in the cart;
+            div.id = productName.slice(0, (productName.length - 1)).replace(/\s/g, "");
+            if (cart.querySelector(div.id) != null) {
+                div.count++;
+            } else {
+                cart.appendChild(div);
+            }
+            // cart.childNodes.forEach(child => {
+            //     if (child.id == div.id) {
+            //         return "its duplicate"
+            //     } else {
+            //         cart.appendChild(div);
+            //     }
+            // })
         })
     })
 
@@ -84,7 +98,35 @@ list.forEach(item => {
     append(item);
 })
 
-// remove items from in-stock;
-
-// item here refers to the item that got added to the cart, where this function is called // the paramter passed to it is the "this" keyword;
 addToCart();
+
+// the search bar;
+
+const search = document.querySelector("input");
+search.addEventListener("keyup", () => {
+    let term = search.value;
+    const itemNames = Array.from(document.querySelectorAll(".item-name"));
+    if (term === "") {
+        productsContainer.childNodes.forEach(product => {
+            product.classList.remove("hide");
+        })
+    }
+
+
+    // log(itemNames.length)
+    itemNames.forEach(item => {
+        if (item.textContent.includes(term)) {
+            productsContainer.childNodes.forEach(product => {
+                if (product.firstChild.textContent.includes(term)) {
+                    product.classList.add("show");
+                } else {
+                    product.classList.add("hide");
+                }
+            })
+        }
+    })
+})
+
+window.onload = function() {
+    search.value = "";
+}

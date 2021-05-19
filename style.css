@@ -135,5 +135,40 @@ main {
 }
 
 .item-in-cart::before {
-    content: "-";
+    content: ".";
+}
+
+
+/* search menu */
+
+.search-menu {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+    color: purple;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+input {
+    width: 50%;
+    margin: 0 auto;
+    height: 1.5rem;
+    border-radius: 0.4rem;
+    outline: none;
+    border: none;
+    box-shadow: 3px 5px 5px purple;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
 }
