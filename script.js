@@ -52,7 +52,6 @@ function addToCart() {
                 // this will return the value but not the description;
                 // the breakpoint allows us to determine where the word "count" is and where is the actual count of items, its a sperator;
                 let breakPoint = itemName.indexOf(":") + 2;
-                console.log(itemName)
                 if (itemName.startsWith("count")) {
                     let countWord = itemName.slice(0, breakPoint);
                     let count = itemName.slice(breakPoint);
@@ -62,8 +61,7 @@ function addToCart() {
                         let itemsCount = countWord + (count - 1);
                         // productDetails is the list of cat, count, price. We are getting the price one and working with it;
                         productDetails[1].textContent = itemsCount;
-                        // append function is being called here to refresh the products div again to changes in products count؛
-                        append(list);
+
                     }
                     removeAnItem();
                 } else {
@@ -76,6 +74,10 @@ function addToCart() {
             div.appendChild(list);
             div.classList.add("product-in-cart")
             cart.appendChild(div);
+            cart.childNodes.forEach(item => {
+                console.log(item.id);
+            })
+
         })
     })
 
