@@ -36,8 +36,8 @@ body {
 }
 
 main {
-    width: 80%;
-    max-width: 1400px;
+    width: 90%;
+    max-width: 1500px;
     min-width: 700px;
     margin: 2rem auto;
     display: flex;
