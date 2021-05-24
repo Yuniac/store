@@ -125,6 +125,7 @@ window.onload = function() {
 // responsiveness functions;
 
 const searchButton = document.querySelector("#search-button");
+const cartButton = document.querySelector("#cart-button");
 
 function showSideMenu(div) {
     if (div.classList.contains("toggle-side-menu")) {
