@@ -27,30 +27,3 @@ const nameToProductInStockMap = new Map([
     ["Apple TV", { category: "TV", count: 7, price: 8800 }],
     ["LG xyz", { category: "Screen", count: 21, price: 3900 }],
 ]);
-
-nameToProductInCartMap = new Map();
-
-function addToCart(name) {
-    let productInStock = nameToProductInStockMap.get(name);
-    if (nameToProductInCartMap.has(name)) {
-        // Add to existing product.
-        let updatedCount = nameToProductInCartMap.get(name).count + 1
-        nameToProductInCartMap.set(name, {
-            category: productInStock.category,
-            count: updatedCount,
-            price: updatedCount * productInStock.price,
-        });
-    } else {
-        // Add new product.
-        nameToProductInCartMap.set(name, {
-            category: productInStock.category,
-            count: 1,
-            price: productInStock.price,
-        });
-    }
-    productInStock.count--;
-}
-
-function removeFromCart(name) {
-
-}

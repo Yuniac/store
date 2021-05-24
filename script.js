@@ -1,6 +1,8 @@
 const log = console.log;
 
 const productsContainer = document.querySelector("#products");
+const searchElementdiv = document.querySelector("#search");
+const cartElementdiv = document.querySelector(".cart");
 const cartElement = document.querySelector("#cart");
 
 
@@ -25,17 +27,11 @@ function productElement(name, product, eventFunction) {
     div.appendChild(h2);
     div.appendChild(ul);
     div.classList.add("product")
-
     h2.addEventListener("click", eventFunction);
-
     return div
 }
 
 // empties the cart element and repopulate the cart element accroding to the cart map;
-function removeProductFromCartEvent() {
-    // TODO: Remove from cart
-}
-
 function rebuildCartInDOM() {
     cartElement.innerHTML = "";
     nameToProductInCartMap.forEach((product, name) => {
@@ -60,8 +56,43 @@ function rebuildProductsInDOM() {
         );
     });
 }
+nameToProductInCartMap = new Map();
 
+function addToCart(name) {
+    let productInStock = nameToProductInStockMap.get(name);
+    if (nameToProductInCartMap.has(name)) {
+        // Add to existing product.
+        let updatedCount = nameToProductInCartMap.get(name).count + 1
+        nameToProductInCartMap.set(name, {
+            category: productInStock.category,
+            count: updatedCount,
+            price: updatedCount * productInStock.price,
+        });
+    } else {
+        // Add new product.
+        nameToProductInCartMap.set(name, {
+            category: productInStock.category,
+            count: 1,
+            price: productInStock.price,
+        });
+    }
+    productInStock.count--;
+}
 rebuildProductsInDOM();
+// Remove from cart;
+function removeProductFromCartEvent(name) {
+    if (nameToProductInCartMap.has(name)) {
+        let productInCart = nameToProductInCartMap.get(name);
+        if (productInCart.count > 0) {
+            productInCart.count--;
+            console.log(productInCart.count);
+        } else {
+            console.log("minus")
+        }
+    } else {
+        console.log(nameToProductInCartMap);
+    }
+}
 
 
 
@@ -91,3 +122,22 @@ search.addEventListener("keyup", () => {
 window.onload = function() {
     search.value = "";
 }
+
+
+// responsiveness functions;
+
+const searchButton = document.querySelector("#search-button");
+const cartButton = document.querySelector("#cart-button");
+function showSideMenu(div) {
+    if (div.classList.contains("toggle-side-menu")) {
+        div.classList.remove("toggle-side-menu");
+    } else {
+        div.classList.add("toggle-side-menu");
+    }
+}
+searchButton.addEventListener("click", () => {
+    showSideMenu(searchElementdiv);
+})
+cartButton.addEventListener("click", () => {
+    showSideMenu(cartElementdiv);
+})
