@@ -29,9 +29,14 @@ h2 {
 
 /* layout */
 
+html,
+body {
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Gill Sans', sans-serif;
-    background-color: black;
+    /* background-color: black; */
 }
 
 main {
@@ -246,5 +251,12 @@ input {
 @media (max-width:675px) {
     .products {
         width: 88%;
+    }
+    .side-menu {
+        bottom: -10px;
+    }
+    .search-menu-button-div,
+    .cart-menu-button-div {
+        top: -35px;
     }
 }
