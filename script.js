@@ -77,10 +77,13 @@ rebuildProductsInDOM();
 // Remove from cart;
 function removeProductFromCartEvent() {
     let productName = this.textContent
+    let productInStock = nameToProductInStockMap.get(productName);
+    console.log(productInStock);
     if (nameToProductInCartMap.has(productName)) {
         let productInCart = nameToProductInCartMap.get(productName);
         if (productInCart.count > 0) {
             productInCart.count--;
+            productInCart.price = productInCart.count * productInStock.price;
             rebuildCartInDOM();
         } else {
             removeProductElementFromCartEvent(this.parentNode);
@@ -148,3 +151,7 @@ searchButton.addEventListener("click", () => {
 cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
 })
+
+// cart counter functionality;
+
+const cartElementCounter = [];
