@@ -33,17 +33,10 @@ function productElement(name, product, eventFunction) {
 function rebuildCartInDOM() {
     cartElement.innerHTML = "";
     nameToProductInCartMap.forEach((product, name) => {
-        cartElement.appendChild(
-            productElement(name, product, removeProductFromCartEvent)
-        );
+        if (product.count > 0) {
+            cartElement.appendChild(productElement(name, product, removeProductFromCartEvent));
+        }
     });
-}
-
-function handleAddProductToCartEvent() {
-    let productName = this.textContent;
-    addToCart(productName);
-    rebuildCartInDOM();
-    rebuildProductsInDOM();
 }
 
 function rebuildProductsInDOM() {
@@ -74,25 +67,39 @@ function addToCart(name) {
             price: productInStock.price,
         });
     }
-    productInStock.count--;
+    if (productInStock.count > 0) {
+        productInStock.count--;
+    } else {
+        productInStock.count = 0;
+    }
 }
 rebuildProductsInDOM();
 // Remove from cart;
-function removeProductFromCartEvent(name) {
-    if (nameToProductInCartMap.has(name)) {
-        let productInCart = nameToProductInCartMap.get(name);
+function removeProductFromCartEvent() {
+    let productName = this.textContent
+    if (nameToProductInCartMap.has(productName)) {
+        let productInCart = nameToProductInCartMap.get(productName);
         if (productInCart.count > 0) {
             productInCart.count--;
-            console.log(productInCart.count);
+            rebuildCartInDOM();
         } else {
-            console.log("minus")
+            removeProductElementFromCartEvent(this.parentNode);
         }
     } else {
         console.log(nameToProductInCartMap);
     }
 }
 
+function handleAddProductToCartEvent() {
+    let productName = this.textContent;
+    addToCart(productName);
+    rebuildCartInDOM();
+    rebuildProductsInDOM();
+}
 
+function removeProductElementFromCartEvent(div) {
+    div.remove();
+}
 
 // the search bar;
 const search = document.querySelector("input");
