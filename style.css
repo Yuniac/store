@@ -260,4 +260,8 @@ input {
     .cart-menu-button-div {
         top: -35px;
     }
+    .search,
+    .cart {
+        width: 18rem;
+    }
 }
