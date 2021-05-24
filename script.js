@@ -125,11 +125,7 @@ window.onload = function() {
 // responsiveness functions;
 
 const searchButton = document.querySelector("#search-button");
-const cartButton = document.querySelector("#cart-button");
-<<<<<<< HEAD
 
-=======
->>>>>>> a47ab4fa1a23bb86555e7c58f2c35c8a7d85e818
 function showSideMenu(div) {
     if (div.classList.contains("toggle-side-menu")) {
         div.classList.remove("toggle-side-menu");
@@ -137,10 +133,7 @@ function showSideMenu(div) {
         div.classList.add("toggle-side-menu");
     }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> a47ab4fa1a23bb86555e7c58f2c35c8a7d85e818
 searchButton.addEventListener("click", () => {
     showSideMenu(searchElementdiv);
 })
