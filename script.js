@@ -2,6 +2,8 @@ const productsContainer = document.querySelector("#products");
 const searchElementdiv = document.querySelector("#search");
 const cartElementdiv = document.querySelector(".cart");
 const cartElement = document.querySelector("#cart");
+nameToProductInCartMap = new Map();
+
 
 
 // the populating function;
@@ -37,6 +39,7 @@ function rebuildCartInDOM() {
             cartElement.appendChild(productElement(name, product, removeProductFromCartEvent));
         }
     });
+    updateCounter();
 }
 
 function rebuildProductsInDOM() {
@@ -47,12 +50,12 @@ function rebuildProductsInDOM() {
         );
     });
 }
-nameToProductInCartMap = new Map();
+rebuildProductsInDOM();
 
 function addToCart(name) {
     let productInStock = nameToProductInStockMap.get(name);
     if (nameToProductInCartMap.has(name)) {
-        // Add to existing product.
+        // Add to existing products.
         let updatedCount = nameToProductInCartMap.get(name).count + 1
         nameToProductInCartMap.set(name, {
             category: productInStock.category,
@@ -67,30 +70,36 @@ function addToCart(name) {
             price: productInStock.price,
         });
     }
+    // update the count in the prodcuts section;
     if (productInStock.count > 0) {
         productInStock.count--;
     } else {
         productInStock.count = 0;
     }
+    updateCounter();
 }
-rebuildProductsInDOM();
-// Remove from cart;
+
+
 function removeProductFromCartEvent() {
     let productName = this.textContent
     let productInStock = nameToProductInStockMap.get(productName);
-    console.log(productInStock);
     if (nameToProductInCartMap.has(productName)) {
         let productInCart = nameToProductInCartMap.get(productName);
         if (productInCart.count > 0) {
             productInCart.count--;
             productInCart.price = productInCart.count * productInStock.price;
+            updateCounter();
             rebuildCartInDOM();
         } else {
             removeProductElementFromCartEvent(this.parentNode);
+            updateCounter();
         }
-    } else {
-        console.log(nameToProductInCartMap);
     }
+}
+
+function removeProductElementFromCartEvent(div) {
+    div.remove();
+    updateCounter();
 }
 
 function handleAddProductToCartEvent() {
@@ -100,9 +109,6 @@ function handleAddProductToCartEvent() {
     rebuildProductsInDOM();
 }
 
-function removeProductElementFromCartEvent(div) {
-    div.remove();
-}
 
 // the search bar;
 const search = document.querySelector("input");
@@ -154,4 +160,8 @@ cartButton.addEventListener("click", () => {
 
 // cart counter functionality;
 
-const cartElementCounter = [];
+const cartElementCounter = document.querySelector("#cart-counter");
+
+function updateCounter() {
+    cartElementCounter.textContent = cartElement.childElementCount;
+}
