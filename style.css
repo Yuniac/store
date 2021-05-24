@@ -167,6 +167,7 @@ main {
     z-index: 5;
 }
 
+
 .search-menu {
     display: flex;
     flex-flow: column nowrap;
