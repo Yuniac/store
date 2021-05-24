@@ -13,7 +13,6 @@ h1 {
     font-family: 'Lucida Sans', Geneva, Verdana, sans-serif;
     color: #4BE2FF;
     margin: 1rem 0 0;
-    text-decoration: underline;
 }
 
 h2 {
@@ -36,13 +35,34 @@ body {
 }
 
 main {
-    width: 80%;
-    max-width: 1400px;
-    min-width: 700px;
+    width: 90%;
+    max-width: 1500px;
     margin: 2rem auto;
     display: flex;
     justify-content: space-between;
+    position: relative;
 }
+
+.cart {
+    height: 400px;
+    border: 4px solid purple;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    background: black;
+    width: 23rem;
+    z-index: 2;
+}
+
+.cart-menu-button-div {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+}
+
+
+/* the body of each item */
 
 .products {
     width: 40%;
@@ -51,24 +71,8 @@ main {
     border: 4px solid purple;
     overflow-y: scroll;
     scroll-behavior: smooth;
+    z-index: 1;
 }
-
-.search {
-    width: 30rem;
-    border: 4px solid purple;
-    width: 25%;
-    height: 400px;
-}
-
-.cart {
-    width: 25%;
-    height: 400px;
-    border: 4px solid purple;
-    overflow-y: auto;
-}
-
-
-/* the body of each item */
 
 .product {
     width: 90%;
@@ -111,7 +115,7 @@ main {
 }
 
 
-/* the ul */
+/* the details of each product */
 
 .items-details {
     display: flex;
@@ -128,12 +132,119 @@ main {
 }
 
 
-/* the li, each item name, price, etc. */
+/* the lis, each item name, price, etc. */
 
 .item-in-cart {
     padding: 0.2rem;
 }
 
 .item-in-cart::before {
-    content: "-";
+    content: ".";
+}
+
+
+/* search menu */
+
+.search {
+    width: 30rem;
+    border: 4px solid purple;
+    height: 400px;
+    position: absolute;
+    background: black;
+    width: 23rem;
+    z-index: 2;
+}
+
+.search-menu-button-div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+}
+
+.search-menu {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+    color: purple;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+input {
+    width: 50%;
+    margin: 0 auto;
+    height: 1.5rem;
+    border-radius: 0.4rem;
+    outline: none;
+    border: none;
+    box-shadow: 3px 5px 5px purple;
+}
+
+.show {
+    display: block;
+    border: 3px double purple;
+}
+
+.hide {
+    display: none;
+}
+
+.side-menu {
+    color: black;
+    font-weight: bold;
+    font-size: 1.4rem;
+    background-color: rebeccapurple;
+    box-shadow: 3px 3px 10px 5px rebeccapurple;
+    border-radius: 0.4rem;
+    padding: 1px 5px;
+    display: none;
+    transition: all 0.5ms ease-in-out;
+}
+
+.side-menu:hover {
+    background-color: rgb(151, 79, 223);
+    cursor: pointer;
+}
+
+
+/* to prevent the annoying text selection when pressing the cart/search buttons (becuase they are just paragraphs made look like buttons with css */
+
+.no-select {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+/* media qs */
+
+@media (max-width: 1125px) {
+    /* the hidden menus offset class */
+    .toggle-side-menu {
+        margin-inline: -45rem;
+    }
+    .cart {
+        right: 0;
+    }
+    .side-menu {
+        display: block;
+    }
+    .products {
+        width: 60%;
+    }
+}
+
+@media (max-width:675px) {
+    .products {
+        width: 88%;
+    }
 }
