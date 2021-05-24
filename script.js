@@ -128,10 +128,6 @@ window.onload = function() {
 
 const searchButton = document.querySelector("#search-button");
 const cartButton = document.querySelector("#cart-button");
-
-// function showSideMenu(div) {
-//     div.style.marginInline = 0;
-// }
 function showSideMenu(div) {
     if (div.classList.contains("toggle-side-menu")) {
         div.classList.remove("toggle-side-menu");
@@ -139,17 +135,6 @@ function showSideMenu(div) {
         div.classList.add("toggle-side-menu");
     }
 }
-
-// function showSideMenu(div) {
-//     if (div.style["marginInline"] === "-25rem") {
-//         div.style["marginInline"] = 0;
-//         if (div.classList.contains("cart")) {
-//             div.style.right = 0;
-//         }
-//     } else {
-//         div.style["marginInline"] = "-25rem";
-//     }
-// }
 searchButton.addEventListener("click", () => {
     showSideMenu(searchElementdiv);
 })
