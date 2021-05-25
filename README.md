@@ -1,1 +1,1 @@
-# Cyan store is a learning project ecommerce.
+# Cyanism store is a learning project for ecommerce.
