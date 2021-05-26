@@ -38,8 +38,9 @@ function rebuildCartInDOM() {
         if (product.count > 0) {
             cartElement.appendChild(productElement(name, product, removeProductFromCartEvent));
         }
+        updateCounter();
     });
-    updateCounter();
+
 }
 
 function rebuildProductsInDOM() {
@@ -51,6 +52,33 @@ function rebuildProductsInDOM() {
     });
 }
 rebuildProductsInDOM();
+
+// cart counter functionality and showing the total in cart;
+
+const quantity = document.querySelector("#quantity");
+const total = document.querySelector("#total-price");
+
+const cartElementCounter = document.querySelector("#cart-counter");
+
+
+
+function updateCounter() {
+    cartElementCounter.textContent = cartElement.childElementCount;
+
+    function getQuantity() {
+        const quantityTotalArray = Array.from(nameToProductInCartMap.values());
+        let quantityTotal = quantityTotalArray.map(x => x.count).reduce((current, nxtValue) => current + nxtValue, 0);
+        quantity.textContent = quantityTotal;
+    }
+    getQuantity();
+
+    function getTotalPrice() {
+        const totalPricesArray = Array.from(nameToProductInCartMap.values());
+        let totalPrices = totalPricesArray.map(x => x.price).reduce((current, nxtValue) => current + nxtValue, 0);
+        total.textContent = totalPrices + "TL";
+    }
+    getTotalPrice();
+}
 
 function addToCart(name) {
     let productInStock = nameToProductInStockMap.get(name);
@@ -158,10 +186,5 @@ cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
 })
 
-// cart counter functionality;
 
-const cartElementCounter = document.querySelector("#cart-counter");
-
-function updateCounter() {
-    cartElementCounter.textContent = cartElement.childElementCount;
-}
+const log = console.log;
