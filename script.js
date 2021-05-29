@@ -4,13 +4,14 @@ const cartElementdiv = document.querySelector(".cart");
 const cartElement = document.querySelector("#cart");
 nameToProductInCartMap = new Map();
 
-
+const log = console.log;
 
 // the populating function;
-function productElement(name, product, eventFunction) {
+function productElement(name, product, eventFunction, outOFStockDiv) {
     let div = document.createElement("div");
+    outOFStockDiv = div;
     let h2 = document.createElement("h2");
-    h2.classList.add("item-name")
+    h2.classList.add("item-name", "no-select")
     h2.textContent = name;
     let ul = document.createElement("ul");
     ul.classList.add("items-details");
@@ -27,6 +28,10 @@ function productElement(name, product, eventFunction) {
     div.appendChild(h2);
     div.appendChild(ul);
     div.classList.add("product")
+    if (product.count < 1) {
+        div.classList.add("out-of-stock");
+        h2.classList.add("out-of-stock-name");
+    }
     h2.addEventListener("click", eventFunction);
     return div
 }
@@ -82,21 +87,25 @@ function updateCounter() {
 
 function addToCart(name) {
     let productInStock = nameToProductInStockMap.get(name);
-    if (nameToProductInCartMap.has(name)) {
+    if (productInStock.count > 0) {
         // Add to existing products.
-        let updatedCount = nameToProductInCartMap.get(name).count + 1
-        nameToProductInCartMap.set(name, {
-            category: productInStock.category,
-            count: updatedCount,
-            price: updatedCount * productInStock.price,
-        });
+        if (nameToProductInCartMap.has(name)) {
+            let updatedCount = nameToProductInCartMap.get(name).count + 1
+            nameToProductInCartMap.set(name, {
+                category: productInStock.category,
+                count: updatedCount,
+                price: updatedCount * productInStock.price,
+            });
+        } else {
+            // Add new product.
+            nameToProductInCartMap.set(name, {
+                category: productInStock.category,
+                count: 1,
+                price: productInStock.price,
+            });
+        }
     } else {
-        // Add new product.
-        nameToProductInCartMap.set(name, {
-            category: productInStock.category,
-            count: 1,
-            price: productInStock.price,
-        });
+
     }
     // update the count in the prodcuts section;
     if (productInStock.count > 0) {
@@ -105,8 +114,8 @@ function addToCart(name) {
         productInStock.count = 0;
     }
     updateCounter();
-}
 
+}
 
 function removeProductFromCartEvent() {
     let productName = this.textContent
@@ -115,9 +124,11 @@ function removeProductFromCartEvent() {
         let productInCart = nameToProductInCartMap.get(productName);
         if (productInCart.count > 0) {
             productInCart.count--;
+            productInStock.count++;
             productInCart.price = productInCart.count * productInStock.price;
             updateCounter();
             rebuildCartInDOM();
+            rebuildProductsInDOM();
         } else {
             removeProductElementFromCartEvent(this.parentNode);
             updateCounter();
@@ -137,18 +148,17 @@ function handleAddProductToCartEvent() {
     rebuildProductsInDOM();
 }
 
-
 // the search bar;
 const search = document.querySelector("input");
 search.addEventListener("keyup", () => {
-    let term = search.value;
-    const itemNames = Array.from(document.querySelectorAll(".item-name"));
+    let term = search.value.toLocaleLowerCase();
+    const productNames = Array.from(document.querySelectorAll(".item-name"));
     if (term === "") {
         productsContainer.childNodes.forEach(product => {
             product.classList.remove("hide");
         })
     }
-    itemNames.forEach(item => {
+    productNames.forEach(item => {
         if (item.textContent.includes(term)) {
             productsContainer.childNodes.forEach(product => {
                 if (product.firstChild.textContent.includes(term)) {
@@ -185,6 +195,3 @@ searchButton.addEventListener("click", () => {
 cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
 })
-
-
-const log = console.log;
