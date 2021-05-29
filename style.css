@@ -175,6 +175,15 @@ main {
     margin: 0 1rem;
 }
 
+.out-of-stock {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.out-of-stock-name {
+    cursor: not-allowed;
+}
+
 
 /* search menu */
 

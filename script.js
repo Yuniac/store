@@ -7,8 +7,9 @@ nameToProductInCartMap = new Map();
 
 
 // the populating function;
-function productElement(name, product, eventFunction) {
+function productElement(name, product, eventFunction, outOFStockDiv) {
     let div = document.createElement("div");
+    outOFStockDiv = div;
     let h2 = document.createElement("h2");
     h2.classList.add("item-name", "no-select")
     h2.textContent = name;
@@ -27,6 +28,10 @@ function productElement(name, product, eventFunction) {
     div.appendChild(h2);
     div.appendChild(ul);
     div.classList.add("product")
+    if (product.count < 1) {
+        div.classList.add("out-of-stock");
+        h2.classList.add("out-of-stock-name");
+    }
     h2.addEventListener("click", eventFunction);
     return div
 }
@@ -99,6 +104,8 @@ function addToCart(name) {
                 price: productInStock.price,
             });
         }
+    } else {
+
     }
     // update the count in the prodcuts section;
     if (productInStock.count > 0) {
@@ -107,7 +114,10 @@ function addToCart(name) {
         productInStock.count = 0;
     }
     updateCounter();
+
 }
+
+
 
 
 function removeProductFromCartEvent() {
@@ -117,7 +127,6 @@ function removeProductFromCartEvent() {
         let productInCart = nameToProductInCartMap.get(productName);
         if (productInCart.count > 0) {
             productInCart.count--;
-            console.log(productInStock);
             productInStock.count++;
             productInCart.price = productInCart.count * productInStock.price;
             updateCounter();
