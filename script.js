@@ -4,7 +4,7 @@ const cartElementdiv = document.querySelector(".cart");
 const cartElement = document.querySelector("#cart");
 nameToProductInCartMap = new Map();
 
-
+const log = console.log;
 
 // the populating function;
 function productElement(name, product, eventFunction, outOFStockDiv) {
@@ -117,9 +117,6 @@ function addToCart(name) {
 
 }
 
-
-
-
 function removeProductFromCartEvent() {
     let productName = this.textContent
     let productInStock = nameToProductInStockMap.get(productName);
@@ -150,7 +147,6 @@ function handleAddProductToCartEvent() {
     rebuildCartInDOM();
     rebuildProductsInDOM();
 }
-
 
 // the search bar;
 const search = document.querySelector("input");
@@ -199,6 +195,3 @@ searchButton.addEventListener("click", () => {
 cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
 })
-
-
-const log = console.log;
