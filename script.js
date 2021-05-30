@@ -148,32 +148,36 @@ function handleAddProductToCartEvent() {
     rebuildProductsInDOM();
 }
 
-// the search bar;
+// the search feature;
+
+// a non-duplicate array of product names to use it in the search;
+const nonDuplicateProductsNames = [];
+Array.from(nameToProductInStockMap.keys()).map(name => {
+    if (nonDuplicateProductsNames.indexOf(name) === -1) {
+        nonDuplicateProductsNames.push(name);
+    }
+});
+
 const search = document.querySelector("input");
 search.addEventListener("keyup", () => {
-    let term = search.value.toLocaleLowerCase();
-    const productNames = Array.from(document.querySelectorAll(".item-name"));
+    log("#")
+    let term = search.value.toLowerCase();
+    // shows all products when the search field is empty;
     if (term === "") {
-        productsContainer.childNodes.forEach(product => {
-            product.classList.remove("hide");
-        })
-    }
-    productNames.forEach(item => {
-        if (item.textContent.includes(term)) {
-            productsContainer.childNodes.forEach(product => {
-                if (product.firstChild.textContent.includes(term)) {
-                    product.classList.add("show");
-                } else {
-                    product.classList.add("hide");
-                }
-            })
+        productsContainer.childNodes.forEach(childContainer => {
+            childContainer.classList.remove("hide");
+        });
+    };
+    // show the only prodcuts that their name matches the search result by showing/hiding depending on whether they match or not;
+    productsContainer.childNodes.forEach(childContainer => {
+        if (childContainer.firstChild.textContent.toLowerCase().startsWith(term) || childContainer.firstChild.textContent.toLowerCase().includes(term)) {
+            childContainer.classList.add("show");
+            childContainer.classList.remove("hide");
+        } else {
+            childContainer.classList.add("hide");
         }
     })
-})
-
-window.onload = function() {
-    search.value = "";
-}
+});
 
 
 // responsiveness functions;
@@ -191,7 +195,7 @@ function showSideMenu(div) {
 
 searchButton.addEventListener("click", () => {
     showSideMenu(searchElementdiv);
-})
+});
 cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
-})
+});
