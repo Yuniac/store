@@ -168,7 +168,7 @@ search.addEventListener("keyup", () => {
             childContainer.classList.remove("hide");
         });
     };
-    // show the only prodcuts that their name matches the search result by showing/hiding depending on whether they match or not;
+    // show the only products that their name matches the search result by showing/hiding depending on whether they match or not;
     productsContainer.childNodes.forEach(childContainer => {
         if (childContainer.firstChild.textContent.toLowerCase().startsWith(term) || childContainer.firstChild.textContent.toLowerCase().includes(term)) {
             childContainer.classList.add("show");
