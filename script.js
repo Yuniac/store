@@ -7,9 +7,8 @@ nameToProductInCartMap = new Map();
 const log = console.log;
 
 // the populating function;
-function productElement(name, product, eventFunction, outOFStockDiv) {
+function productElement(name, product, eventFunction, priceRange = 0) {
     let div = document.createElement("div");
-    outOFStockDiv = div;
     let h2 = document.createElement("h2");
     h2.classList.add("item-name", "no-select")
     h2.textContent = name;
@@ -33,7 +32,11 @@ function productElement(name, product, eventFunction, outOFStockDiv) {
         h2.classList.add("out-of-stock-name");
     }
     h2.addEventListener("click", eventFunction);
-    return div
+    if (priceRange <= product.price) {
+        return div
+    } else {
+        return null;
+    }
 }
 
 // empties the cart element and repopulate the cart element accroding to the cart map;
@@ -41,22 +44,24 @@ function rebuildCartInDOM() {
     cartElement.innerHTML = "";
     nameToProductInCartMap.forEach((product, name) => {
         if (product.count > 0) {
-            cartElement.appendChild(productElement(name, product, removeProductFromCartEvent));
+            cartElement.append(productElement(name, product, removeProductFromCartEvent));
         }
         updateCounter();
     });
 
 }
 
-function rebuildProductsInDOM() {
+function rebuildProductsInDOM(priceRange = 0) {
     productsContainer.innerHTML = "";
     nameToProductInStockMap.forEach((product, name) => {
-        productsContainer.appendChild(
-            productElement(name, product, handleAddProductToCartEvent)
-        );
+        if (productElement(name, product, handleAddProductToCartEvent, priceRange) !== null) {
+            productsContainer.append(
+                productElement(name, product, handleAddProductToCartEvent, priceRange)
+            );
+        }
     });
 }
-rebuildProductsInDOM();
+rebuildProductsInDOM(priceRange = 0);
 
 // cart counter functionality and showing the total in cart;
 
@@ -101,8 +106,6 @@ function addToCart(name) {
                 price: productInStock.price,
             });
         }
-    } else {
-
     }
     // update the count in the prodcuts section;
     if (productInStock.count > 0) {
@@ -125,7 +128,7 @@ function removeProductFromCartEvent() {
             productInCart.price = productInCart.count * productInStock.price;
             updateCounter();
             rebuildCartInDOM();
-            rebuildProductsInDOM();
+            rebuildProductsInDOM(priceRange = 0);
         } else {
             removeProductElementFromCartEvent(this.parentNode);
             updateCounter();
@@ -142,7 +145,7 @@ function handleAddProductToCartEvent() {
     let productName = this.textContent;
     addToCart(productName);
     rebuildCartInDOM();
-    rebuildProductsInDOM();
+    rebuildProductsInDOM(priceRange = 0);
 }
 
 // the search feature;
@@ -191,10 +194,21 @@ cartButton.addEventListener("click", () => {
 
 // range functionality;
 
-// set range max and min dynamically;
-const range = document.querySelector("input[type=range]");
-log(range);
+// set range min, max and value dynamically;
+const range = document.querySelector("#range");
 
-function getRange() {
-    return
+const maxPrice = Array.from(nameToProductInStockMap.values()).map(productPrice => productPrice.price).reduce((acc, nxt) => Math.max(acc, nxt), 0);
+range.setAttribute("max", maxPrice);
+// range.value = maxPrice;
+const minPrice = Array.from(nameToProductInStockMap.values()).map(productPrice => productPrice.price).reduce((acc, nxt) => Math.min(acc, nxt), 0);
+range.setAttribute("min", minPrice);
+
+
+// show items based on price range;
+const allPrices = Array.from(Array.from(nameToProductInStockMap.values()).map(productPrice => productPrice.price));
+
+function showProductsBasedOnPrice() {
+    let priceRange = range.value;
+    rebuildProductsInDOM(priceRange);
 }
+range.addEventListener("change", showProductsBasedOnPrice);

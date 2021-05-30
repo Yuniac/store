@@ -218,13 +218,31 @@ label {
 }
 
 input {
+    outline: none;
+    border: none;
+    box-shadow: 3px 5px 5px purple;
+}
+
+input[type="text"] {
     width: 50%;
     margin: 0 auto;
     height: 1.5rem;
     border-radius: 0.4rem;
-    outline: none;
-    border: none;
-    box-shadow: 3px 5px 5px purple;
+}
+
+.range-menu {
+    margin-top: 3rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="range"] {
+    margin: 0 auto;
+    display: block;
 }
 
 .show {
