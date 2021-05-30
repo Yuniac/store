@@ -1,4 +1,4 @@
-const nameToProductInStockMap = new Map([
+let nameToProductInStockMap = new Map([
     ["Dell", { category: "Laptop", count: 6, price: 4200 }],
     ["Sony curve", { category: "TV", count: 7, price: 8900 }],
     ["LG abc", { category: "Screen", count: 5, price: 3100 }],
