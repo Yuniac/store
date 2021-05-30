@@ -62,10 +62,7 @@ rebuildProductsInDOM();
 
 const quantity = document.querySelector("#quantity");
 const total = document.querySelector("#total-price");
-
 const cartElementCounter = document.querySelector("#cart-counter");
-
-
 
 function updateCounter() {
     cartElementCounter.textContent = cartElement.childElementCount;
@@ -150,14 +147,6 @@ function handleAddProductToCartEvent() {
 
 // the search feature;
 
-// a non-duplicate array of product names to use it in the search;
-const nonDuplicateProductsNames = [];
-Array.from(nameToProductInStockMap.keys()).map(name => {
-    if (nonDuplicateProductsNames.indexOf(name) === -1) {
-        nonDuplicateProductsNames.push(name);
-    }
-});
-
 const search = document.querySelector("input");
 search.addEventListener("keyup", () => {
     log("#")
@@ -199,3 +188,13 @@ searchButton.addEventListener("click", () => {
 cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
 });
+
+// range functionality;
+
+// set range max and min dynamically;
+const range = document.querySelector("input[type=range]");
+log(range);
+
+function getRange() {
+    return
+}
