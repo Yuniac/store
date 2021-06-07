@@ -232,37 +232,6 @@ function filterProducts() {
     let priceRange = range.value;
     let category = catgeoriesMenu.value;
     rebuildProductsInDOM(priceRange, category);
-    // function showProductsBasedOnPrice() {
-
-    //     // pass the price range to the building function;
-
-    // }
-
 };
 range.addEventListener("change", filterProducts);
 catgeoriesMenu.addEventListener("change", filterProducts);
-
-
-// catgeoriesMenu.addEventListener("change", () => {
-//     if (selectedCategory() === "All") {
-//         productsContainer.childNodes.forEach(childContainer => {
-//             childContainer.classList.remove("hide");
-//             rebuildProductsInDOM();
-//         });
-//     } else {
-//         productsContainer.childNodes.forEach(childContainer => {
-//             if (childContainer.textContent.includes(selectedCategory())) {
-//                 if (!childContainer.classList.contains("show")) {
-//                     childContainer.classList.add("show");
-//                 }
-//                 if (childContainer.classList.contains("hide")) {
-//                     childContainer.classList.remove("hide");
-//                 }
-//             } else {
-//                 if (!childContainer.classList.contains("hide")) {
-//                     childContainer.classList.add("hide");
-//                 }
-//             }
-//         })
-//     }
-// });
