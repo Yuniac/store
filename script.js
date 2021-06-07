@@ -32,15 +32,25 @@ function productElement(name, product, eventFunction, priceRange = 0, category) 
         h2.classList.add("out-of-stock-name");
     }
     h2.addEventListener("click", eventFunction);
-    if (priceRange <= product.price && (category === "All" || product.category === category)) {
-        return div
+    // if the category parameter is presnet then use it to determine whethe we return a div to be built or not, if not, we only filter using the price;
+    if (category) {
+        if (priceRange <= product.price && (category === "All" || product.category === category)) {
+            return div
+        } else {
+            return null;
+        }
     } else {
-        return null;
+        if (priceRange <= product.price) {
+            return div
+        } else {
+            return null;
+        }
     }
 }
 
+
 // this function rebuilds the stock;
-function rebuildProductsInDOM(priceRange = 0, category) {
+function rebuildProductsInDOM(priceRange = 0, category = "All") {
     productsContainer.innerHTML = "";
     nameToProductInStockMap.forEach((product, name) => {
         // the productElement is the div returned by the 'productElement' function if all parameters are met;
@@ -114,7 +124,6 @@ function addToCart(name) {
         productInStock.count = 0;
     }
     updateCounter();
-
 }
 
 function removeProductFromCartEvent() {
@@ -128,7 +137,7 @@ function removeProductFromCartEvent() {
             productInCart.price = productInCart.count * productInStock.price;
             updateCounter();
             rebuildCartInDOM();
-            rebuildProductsInDOM(priceRange = 0);
+            rebuildProductsInDOM(priceRange = 0, category = "All");
         } else {
             removeProductElementFromCartEvent(this.parentNode);
             updateCounter();
@@ -145,7 +154,7 @@ function handleAddProductToCartEvent() {
     let productName = this.textContent;
     addToCart(productName);
     rebuildCartInDOM();
-    rebuildProductsInDOM(priceRange = 0);
+    rebuildProductsInDOM(priceRange = 0, category = "All");
 }
 
 // the search feature;
