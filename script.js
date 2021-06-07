@@ -197,9 +197,9 @@ searchButton.addEventListener("click", () => {
 cartButton.addEventListener("click", () => {
     showSideMenu(cartElementdiv);
 });
-
+// filter products functionality;
+const filterButton = document.querySelector("button");
 // range functionality;
-
 // set range min, max and value dynamically;
 const range = document.querySelector("#range");
 
@@ -235,3 +235,4 @@ function filterProducts() {
 };
 range.addEventListener("change", filterProducts);
 catgeoriesMenu.addEventListener("change", filterProducts);
+filterButton.addEventListener("click", filterProducts);

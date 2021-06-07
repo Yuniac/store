@@ -200,7 +200,7 @@ main {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 20rem;
+    height: 30rem;
     width: 100%;
 }
 
@@ -222,11 +222,22 @@ main {
 .categories-menu {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+    height: 10rem;
 }
 
 .categories-menu option {
     background-color: black;
     color: purple;
+}
+
+.categories-menu button {
+    width: 50%;
+    margin: 0 auto;
+    background-color: black;
+    color: purple;
+    padding: 2px 0;
+    border: 1px solid purple;
 }
 
 label {
