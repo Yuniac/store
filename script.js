@@ -7,7 +7,7 @@ nameToProductInCartMap = new Map();
 const log = console.log;
 
 // the populating function;
-function productElement(name, product, eventFunction, priceRange = 0) {
+function productElement(name, product, eventFunction, priceRange = 0, category) {
     let div = document.createElement("div");
     let h2 = document.createElement("h2");
     h2.classList.add("item-name", "no-select")
@@ -32,12 +32,36 @@ function productElement(name, product, eventFunction, priceRange = 0) {
         h2.classList.add("out-of-stock-name");
     }
     h2.addEventListener("click", eventFunction);
-    if (priceRange <= product.price) {
-        return div
+    // if the category parameter is presnet then use it to determine whethe we return a div to be built or not, if not, we only filter using the price;
+    if (category) {
+        if (priceRange <= product.price && (category === "All" || product.category === category)) {
+            return div
+        } else {
+            return null;
+        }
     } else {
-        return null;
+        if (priceRange <= product.price) {
+            return div
+        } else {
+            return null;
+        }
     }
 }
+
+
+// this function rebuilds the stock;
+function rebuildProductsInDOM(priceRange = 0, category = "All") {
+    productsContainer.innerHTML = "";
+    nameToProductInStockMap.forEach((product, name) => {
+        // the productElement is the div returned by the 'productElement' function if all parameters are met;
+        if (productElement(name, product, handleAddProductToCartEvent, priceRange, category) !== null) {
+            productsContainer.append(
+                productElement(name, product, handleAddProductToCartEvent, priceRange, category)
+            );
+        }
+    });
+}
+rebuildProductsInDOM(priceRange = 0, category = "All");
 
 // empties the cart element and repopulate the cart element accroding to the cart map;
 function rebuildCartInDOM() {
@@ -50,21 +74,7 @@ function rebuildCartInDOM() {
     });
 
 }
-
-function rebuildProductsInDOM(priceRange = 0) {
-    productsContainer.innerHTML = "";
-    nameToProductInStockMap.forEach((product, name) => {
-        if (productElement(name, product, handleAddProductToCartEvent, priceRange) !== null) {
-            productsContainer.append(
-                productElement(name, product, handleAddProductToCartEvent, priceRange)
-            );
-        }
-    });
-}
-rebuildProductsInDOM(priceRange = 0);
-
 // cart counter functionality and showing the total in cart;
-
 const quantity = document.querySelector("#quantity");
 const total = document.querySelector("#total-price");
 const cartElementCounter = document.querySelector("#cart-counter");
@@ -114,7 +124,6 @@ function addToCart(name) {
         productInStock.count = 0;
     }
     updateCounter();
-
 }
 
 function removeProductFromCartEvent() {
@@ -128,7 +137,7 @@ function removeProductFromCartEvent() {
             productInCart.price = productInCart.count * productInStock.price;
             updateCounter();
             rebuildCartInDOM();
-            rebuildProductsInDOM(priceRange = 0);
+            rebuildProductsInDOM(priceRange = 0, category = "All");
         } else {
             removeProductElementFromCartEvent(this.parentNode);
             updateCounter();
@@ -145,14 +154,12 @@ function handleAddProductToCartEvent() {
     let productName = this.textContent;
     addToCart(productName);
     rebuildCartInDOM();
-    rebuildProductsInDOM(priceRange = 0);
+    rebuildProductsInDOM(priceRange = 0, category = "All");
 }
 
 // the search feature;
-
 const search = document.querySelector("input");
 search.addEventListener("keyup", () => {
-    log("#")
     let term = search.value.toLowerCase();
     // shows all products when the search field is empty;
     if (term === "") {
@@ -160,7 +167,7 @@ search.addEventListener("keyup", () => {
             childContainer.classList.remove("hide");
         });
     };
-    // show the only products that their name matches the search result by showing/hiding depending on whether they match or not;
+    // show the only products that their name matches the search result by showing/hiding that div depending on whether it matches or not;
     productsContainer.childNodes.forEach(childContainer => {
         if (childContainer.firstChild.textContent.toLowerCase().startsWith(term) || childContainer.firstChild.textContent.toLowerCase().includes(term)) {
             childContainer.classList.add("show");
@@ -173,7 +180,6 @@ search.addEventListener("keyup", () => {
 
 
 // responsiveness functions;
-
 const searchButton = document.querySelector("#search-button");
 const cartButton = document.querySelector("#cart-button");
 
@@ -199,16 +205,33 @@ const range = document.querySelector("#range");
 
 const maxPrice = Array.from(nameToProductInStockMap.values()).map(productPrice => productPrice.price).reduce((acc, nxt) => Math.max(acc, nxt), 0);
 range.setAttribute("max", maxPrice);
-// range.value = maxPrice;
 const minPrice = Array.from(nameToProductInStockMap.values()).map(productPrice => productPrice.price).reduce((acc, nxt) => Math.min(acc, nxt), 0);
 range.setAttribute("min", minPrice);
-
 
 // show items based on price range;
 const allPrices = Array.from(Array.from(nameToProductInStockMap.values()).map(productPrice => productPrice.price));
 
-function showProductsBasedOnPrice() {
+
+// categories functionality;
+const catgeoriesMenu = document.querySelector("#category-menu");
+
+// get all categories dynamically;
+const fullCategoriesList = Array.from(nameToProductInStockMap.values()).map(product => product.category);
+// remove duplicates;
+const categoriesList = [...new Set(fullCategoriesList)];
+
+// populate the select menu with categories names;
+categoriesList.forEach(category => {
+    let selectElement = document.createElement("option");
+    selectElement.textContent = category;
+    catgeoriesMenu.append(selectElement);
+})
+
+// show products based on filters (price range and category);
+function filterProducts() {
     let priceRange = range.value;
-    rebuildProductsInDOM(priceRange);
-}
-range.addEventListener("change", showProductsBasedOnPrice);
+    let category = catgeoriesMenu.value;
+    rebuildProductsInDOM(priceRange, category);
+};
+range.addEventListener("change", filterProducts);
+catgeoriesMenu.addEventListener("change", filterProducts);

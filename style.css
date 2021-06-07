@@ -18,7 +18,7 @@ h1 {
 h2 {
     color: blueviolet;
     text-align: center;
-    margin: 0.5rem auto;
+    margin: 0.5rem auto 2rem;
     border-bottom: 2px ridge grey;
     width: 80%;
     text-shadow: 1px 5px 20px #ccc;
@@ -91,8 +91,7 @@ main {
 .product {
     width: 90%;
     border: 1px solid green;
-    margin: 0 auto;
-    margin-bottom: 1rem;
+    margin: 0 auto 2rem;
     background-color: lightblue;
 }
 
@@ -105,7 +104,7 @@ main {
 }
 
 
-/* the h2  */
+/* the h2: thei item name both in cart and in stock */
 
 .item-name {
     text-align: left;
@@ -196,6 +195,15 @@ main {
     z-index: 2;
 }
 
+.search-menu-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 20rem;
+    width: 100%;
+}
+
 .search-menu-button-div {
     position: absolute;
     left: 0;
@@ -208,6 +216,17 @@ main {
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
+    width: 100%;
+}
+
+.categories-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.categories-menu option {
+    background-color: black;
+    color: purple;
 }
 
 label {
